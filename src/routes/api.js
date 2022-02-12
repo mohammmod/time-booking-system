@@ -1,11 +1,48 @@
 var express = require('express')
 const User = require('../models/User')
 const Databaseconnection = require('../database');
+const project = require('../models/project');
 
 var app = express()
 const port =  3000;
 
 Databaseconnection.connectDb();
+
+app.get('/checkIn', function(req, res) {
+  projectCheckName = req.query.project
+  project.create(
+    {
+      "projectName": projectCheckName
+    }
+  )
+  .then(project => {
+    res.json ({
+      'conformation' : 'success',
+      'data': project
+    });
+  })
+  .catch(err => {
+    es.json ({
+      'confirmation' :'fail',
+      'message': err.message
+    });
+  });
+});
+
+app.get('/checkOut', function(req, res) {
+  projectCheckOut = req.query.project
+  project.create(
+    {
+      "projectCheckOut": projectCheckOut
+    }
+  )
+  .then(project => {
+    res.json({
+      'confirmation': 'success',
+      'data': project 
+    })
+  })
+});
 
 app.get('/profile', function (req, res) {
     User.find()
@@ -44,7 +81,6 @@ app.get('/addme',function (req, res) {
         'message': err.message
     });
   });
-
 });
     
 
